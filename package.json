@@ -1,0 +1,26 @@
+{
+  "name": "saludmaterna",
+  "version": "1.0.0",
+  "description": "Idioma del Cuidado — Prototipo intercultural de salud materna en Chile",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./assets/input.css -o ./assets/styles.css --minify",
+    "start": "node server.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MKbenjA9/SaludMaterna-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MKbenjA9/SaludMaterna-/issues"
+  },
+  "homepage": "https://github.com/MKbenjA9/SaludMaterna-#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "private": true
+}

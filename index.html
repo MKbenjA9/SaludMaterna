@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Idioma del Cuidado: prototipo de comunicación intercultural entre gestantes migrantes y profesionales de salud en Chile.">
+    <meta name="theme-color" content="#f43f5e">
+    <title>Idioma del Cuidado - Plataforma Lingüística e Intercultural</title>
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./assets/styles.css">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: OutFit & Nunito for warm pastel aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #F9FBE7 0%, #E8F5E9 40%, #E3F2FD 70%, #F3E5F5 100%);
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.15), 0 4px 6px -2px rgba(148, 163, 184, 0.05);
+        }
+        .soft-shadow-lg {
+            box-shadow: 0 20px 40px -15px rgba(100, 116, 139, 0.18);
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-700 min-h-screen flex flex-col">
+
+    <!-- TOP HEADER NAVBAR -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-rose-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 min-h-20 py-3 flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3 cursor-pointer" role="button" tabindex="0" aria-label="Volver al inicio" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();navigate('landing')}" onclick="navigate('landing')">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-200 via-pink-200 to-teal-200 flex items-center justify-center text-rose-600 text-2xl shadow-sm border border-white">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="font-heading font-extrabold text-xl sm:text-2xl text-slate-800 leading-none">Idioma del Cuidado</h1>
+                    <p class="text-xs font-semibold text-teal-700 mt-1">Salud Materna e Interculturalidad Chile 🇨🇱</p>
+                </div>
+            </div>
+
+            <!-- Profile Switcher Header -->
+            <div class="flex items-center bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/80 shadow-inner">
+                <button id="nav-btn-gestante" onclick="setProfile('gestante')" 
+                        class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-white text-rose-600 shadow-sm">
+                    <i class="fa-solid fa-person-pregnant text-base"></i>
+                    <span class="hidden sm:inline">Perfil</span> Gestante
+                </button>
+                <button id="nav-btn-pro" onclick="setProfile('profesional')" 
+                        class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900">
+                    <i class="fa-solid fa-user-doctor text-base"></i>
+                    <span class="hidden sm:inline">Perfil</span> Profesional
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+        <!-- ========================================================= -->
+        <!-- SCREEN 0: LANDING & ROLE SELECTOR                         -->
+        <!-- ========================================================= -->
+        <section id="screen-landing" class="py-6 space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden glass-card soft-shadow-lg border border-white p-6 sm:p-10 flex flex-col md:flex-row items-center gap-8">
+                <div class="space-y-4 md:w-3/5 z-10">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-extrabold bg-teal-100 text-teal-800 rounded-full border border-teal-200">
+                        <i class="fa-solid fa-hand-holding-heart"></i> Prototipo Intercultural 4.1 & 4.2
+                    </span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-800 leading-tight">
+                        Cuidando el lenguaje para cuidar la vida 🤱🏻✨
+                    </h2>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        Plataforma bilateral diseñada para acompañar a las gestantes migrantes y orientar a los profesionales de salud en Chile, acortando distancias de vocabulario y cultura durante el embarazo, parto y puerperio.
+                    </p>
+                </div>
+                <div class="md:w-2/5 w-full flex justify-center">
+                    <img src="./assets/photo-1584515979956-d9f6e5d09982.jpg" 
+                         alt="Atención médica empática" 
+                         class="rounded-2xl object-cover h-56 w-full shadow-md border-2 border-white">
+                </div>
+            </div>
+
+            <!-- Role Selector Cards -->
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                
+                <!-- Card Gestante -->
+                <div onclick="setProfile('gestante')" 
+                     class="bg-gradient-to-b from-white to-rose-50/60 rounded-3xl p-6 border-2 border-rose-100 hover:border-rose-300 transition-all cursor-pointer soft-shadow group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-rose-100 text-rose-500 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            🤰
+                        </div>
+                        <span class="text-xs font-bold text-rose-600 bg-rose-100/70 px-3 py-1 rounded-full">Perfil 1</span>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-800 mb-2">Soy Gestante / Usuaria</h3>
+                    <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                        Selecciona tu país de origen, busca palabras de tu cultura y conoce cómo se dicen en Chile con explicaciones sencillas, fotos e información del sistema de salud (CESFAM y Maternidad).
+                    </p>
+                    <div class="flex items-center text-rose-600 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        Ingresar como Gestante <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+                <!-- Card Profesional -->
+                <div onclick="setProfile('profesional')" 
+                     class="bg-gradient-to-b from-white to-teal-50/60 rounded-3xl p-6 border-2 border-teal-100 hover:border-teal-300 transition-all cursor-pointer soft-shadow group hover:-translate-y-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-14 h-14 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                            🩺
+                        </div>
+                        <span class="text-xs font-bold text-teal-600 bg-teal-100/70 px-3 py-1 rounded-full">Perfil 2</span>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-slate-800 mb-2">Soy Profesional de Salud</h3>
+                    <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                        Herramienta de atención en box para consultar modismos por país, guías de comunicación empática, láminas ilustrativas para mostrar a la paciente y preguntas de verificación (Teach-Back).
+                    </p>
+                    <div class="flex items-center text-teal-600 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                        Ingresar como Profesional <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- PROFILE 1: GESTANTE FLOW                                  -->
+        <!-- ========================================================= -->
+        <div id="flow-gestante" class="hidden space-y-6">
+
+            <!-- Stepper Breadcrumb (Recorrido Gestante 4.2) -->
+            <div class="bg-white/80 border border-rose-200/80 rounded-2xl p-3.5 soft-shadow flex items-center justify-between overflow-x-auto text-xs text-rose-900">
+                <span class="font-bold flex items-center gap-1.5 whitespace-nowrap text-rose-600">
+                    <i class="fa-solid fa-route"></i> Recorrido Gestante:
+                </span>
+                <div class="flex items-center gap-2 font-semibold text-slate-500 whitespace-nowrap">
+                    <span class="text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-200">1. País de Origen</span> &rarr;
+                    <span class="text-slate-700">2. Buscador</span> &rarr;
+                    <span class="text-slate-700">3. Equivalencia Chile</span> &rarr;
+                    <span class="text-slate-700">4. Explicación Sencilla</span> &rarr;
+                    <span class="text-slate-700">5. Recurso Visual</span>
+                </div>
+            </div>
+
+            <!-- SECCIÓN AMPLIA DE SELECCIÓN DE PAÍSES DE ORIGEN -->
+            <div class="bg-white rounded-3xl p-5 sm:p-7 soft-shadow border border-rose-100 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-rose-100 pb-3">
+                    <div>
+                        <h3 class="font-heading text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-earth-americas text-rose-400"></i> Selecciona tu País de Origen
+                        </h3>
+                        <p class="text-xs text-slate-500">Adapta los términos, modismos y explicaciones al lenguaje habitual de tu país.</p>
+                    </div>
+                    <span class="text-xs font-bold bg-rose-100 text-rose-700 px-3 py-1 rounded-full self-start sm:self-auto" id="selected-country-label">
+                        País actual: Venezuela 🇻🇪
+                    </span>
+                </div>
+
+                <!-- Grid de Países Latinoamérica y El Caribe -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 text-xs" id="gestante-countries-grid">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- TAB CONTAINER -->
+            <div class="flex flex-wrap gap-2 border-b border-rose-200/60 pb-1">
+                <button onclick="switchGestanteTab('search')" id="tab-g-search" 
+                        class="px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rose-500 text-white shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass"></i> Buscador de Términos
+                </button>
+                <button onclick="switchGestanteTab('dictionary')" id="tab-g-dictionary" 
+                        class="px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-white text-slate-600 hover:bg-rose-50 flex items-center gap-2">
+                    <i class="fa-solid fa-book-medical text-rose-400"></i> Diccionario Obstétrico
+                </button>
+                <button onclick="switchGestanteTab('system')" id="tab-g-system" 
+                        class="px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-white text-slate-600 hover:bg-rose-50 flex items-center gap-2">
+                    <i class="fa-solid fa-hospital-user text-teal-500"></i> Sistema de Salud Chileno
+                </button>
+            </div>
+
+            <!-- TAB 1: BUSCADOR Y RESULTADO DE EQUIVALENCIA -->
+            <div id="gestante-tab-search" class="space-y-6">
+                <!-- Input de búsqueda -->
+                <div class="bg-white rounded-3xl p-4 soft-shadow border border-rose-100">
+                    <div class="relative">
+                        <input type="text" id="gestante-search-input" aria-label="Buscar término obstétrico" 
+                               placeholder="Escribe una palabra o molestia (ej: provocar el parto, romper agua, quebranto, sanar, ecos)..." 
+                               class="w-full pl-12 pr-28 py-3.5 bg-slate-50 border border-rose-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm text-slate-800">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-rose-400 text-lg"></i>
+                        <button onclick="performGestanteSearch()" 
+                                class="absolute right-2 top-2 bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-sm transition-all">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card Resultado Integrado con Explicación y Recurso Visual -->
+                <div id="gestante-result-card" aria-live="polite" class="bg-white rounded-3xl border border-rose-100 soft-shadow-lg overflow-hidden">
+                    
+                    <!-- Card Top Header -->
+                    <div class="bg-gradient-to-r from-rose-200 via-pink-100 to-amber-100 p-6 border-b border-rose-200/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider bg-white/80 text-rose-700 px-3 py-1 rounded-full shadow-sm" id="res-country-badge">
+                                Expresión en Venezuela 🇻🇪
+                            </span>
+                            <h3 class="font-heading text-2xl sm:text-3xl font-extrabold text-slate-800 mt-2" id="res-origin-term">
+                                "Provocar el parto"
+                            </h3>
+                        </div>
+                        <div class="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl border border-white text-xs font-bold text-slate-700 shadow-sm" id="res-category-badge">
+                            Categoría: Procedimiento Obstétrico
+                        </div>
+                    </div>
+
+                    <div class="p-6 space-y-6">
+                        <!-- Equivalencia en Chile -->
+                        <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-4 border border-teal-200/70 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-2xl">
+                                🇨🇱
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-teal-800 uppercase tracking-wider">En Chile el profesional lo llama:</h4>
+                                <p class="font-heading text-xl font-extrabold text-slate-800 mt-0.5" id="res-chile-term">Inducción del parto</p>
+                            </div>
+                        </div>
+
+                        <!-- Explicación Sencilla -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-heart-pulse text-rose-400"></i> Explicación Clara y Sencilla
+                            </h4>
+                            <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/60 text-slate-700 text-sm leading-relaxed" id="res-explanation">
+                                Procedimiento médico asistido donde se colocan sueros u hormonas para iniciar las contracciones del útero cuando es el momento seguro para que nazca el bebé.
+                            </div>
+                        </div>
+
+                        <!-- Recurso Visual (Foto e Ilustración) -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-image text-rose-400"></i> Recurso Visual de Apoyo
+                            </h4>
+                            <div class="border border-slate-200/80 rounded-2xl p-4 bg-slate-50 flex flex-col md:flex-row items-center gap-5">
+                                <img id="res-visual-img" 
+                                     src="./assets/photo-1579684385127-1ef15d508118.jpg" 
+                                     alt="Recurso visual explicativo" 
+                                     class="w-full md:w-64 h-40 object-cover rounded-xl shadow-sm border-2 border-white">
+                                <div class="space-y-2 text-center md:text-left">
+                                    <h5 class="font-heading font-bold text-slate-800 text-base" id="res-visual-title">Apoyo gráfico explicativo</h5>
+                                    <p class="text-xs text-slate-600 leading-relaxed" id="res-visual-desc">
+                                        Imagen explicativa que muestra el monitoreo materno-fetal y la administración controlada de suero en la sala de preparto.
+                                    </p>
+                                    <span class="inline-block text-[11px] font-semibold bg-teal-100 text-teal-800 px-3 py-1 rounded-lg">
+                                        <i class="fa-solid fa-circle-check mr-1"></i> Facilitado para la comprensión paciente-matrona
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: DICCIONARIO OBSTÉTRICO COMPLETO -->
+            <div id="gestante-tab-dictionary" class="hidden bg-white rounded-3xl p-6 border border-rose-100 soft-shadow space-y-4">
+                <div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800">Diccionario Obstétrico por Categorías</h3>
+                    <p class="text-xs text-slate-500">Explora términos frecuentes organizados con sus equivalencias e imágenes.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-4" id="dict-items-container">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- TAB 3: SISTEMA DE SALUD CHILENO -->
+            <div id="gestante-tab-system" class="hidden space-y-6">
+                <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-3xl border border-teal-100 soft-shadow space-y-2">
+                    <h3 class="font-heading text-xl font-bold text-teal-900">¿Cómo funciona la Atención de Maternidad en Chile? 🇨🇱</h3>
+                    <p class="text-xs text-slate-600">
+                        En Chile, la atención del embarazo es gratuita en la red pública de salud para todas las gestantes, independiente de su situación migratoria.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- CESFAM Card -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 soft-shadow space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="w-full h-36 overflow-hidden rounded-2xl">
+                                <img src="./assets/photo-1629909613654-28e377c37b09.jpg" 
+                                     alt="CESFAM Atención Primaria" class="w-full h-full object-cover">
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 bg-teal-100 text-teal-800 rounded-full">Atención Primaria</span>
+                            <h4 class="font-heading text-lg font-bold text-slate-800">CESFAM (Centro de Salud Familiar)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es tu centro de salud del barrio. Aquí la <strong>Matrona</strong> realiza tus controles mensuales, solicita exámenes de sangre, ecografías iniciales y entrega la leche del programa PNAC.
+                            </p>
+                        </div>
+                        <ul class="text-xs text-teal-800 space-y-1 font-semibold bg-teal-50/70 p-3 rounded-xl">
+                            <li><i class="fa-solid fa-check text-teal-600 mr-1.5"></i> Controles mensuales de embarazo</li>
+                            <li><i class="fa-solid fa-check text-teal-600 mr-1.5"></i> Vacunas obligatorias de gestación</li>
+                        </ul>
+                    </div>
+
+                    <!-- Hospital Maternidad Card -->
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 soft-shadow space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="w-full h-36 overflow-hidden rounded-2xl">
+                                <img src="./assets/photo-1519494026892-80bbd2d6fd0d.jpg" 
+                                     alt="Hospital Maternidad Chile" class="w-full h-full object-cover">
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 bg-rose-100 text-rose-800 rounded-full">Atención Hospitalaria</span>
+                            <h4 class="font-heading text-lg font-bold text-slate-800">Hospital / Maternidad de Urgencia</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Lugar al que acudirás cuando comiences el trabajo de parto o si se presenta una urgencia obstétrica (pérdida de sangre, dolor fuerte o pérdida de líquido).
+                            </p>
+                        </div>
+                        <ul class="text-xs text-rose-800 space-y-1 font-semibold bg-rose-50/70 p-3 rounded-xl">
+                            <li><i class="fa-solid fa-check text-rose-600 mr-1.5"></i> Atención del parto e internación</li>
+                            <li><i class="fa-solid fa-check text-rose-600 mr-1.5"></i> Urgencias obstétricas 24/7</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PROFILE 2: PROFESIONAL DE SALUD FLOW                      -->
+        <!-- ========================================================= -->
+        <div id="flow-profesional" class="hidden space-y-6">
+
+            <!-- Stepper Breadcrumb (Recorrido Profesional 4.2) -->
+            <div class="bg-slate-800 text-slate-200 rounded-2xl p-3.5 soft-shadow flex items-center justify-between overflow-x-auto text-xs">
+                <span class="font-bold flex items-center gap-1.5 whitespace-nowrap text-teal-400">
+                    <i class="fa-solid fa-route"></i> Recorrido Profesional:
+                </span>
+                <div class="flex items-center gap-2 font-medium opacity-80 whitespace-nowrap">
+                    <span class="text-white font-bold bg-slate-700 px-2 py-0.5 rounded-lg">1. Selección País Paciente</span> &rarr;
+                    <span>2. Buscador Intercultural</span> &rarr;
+                    <span>3. Significado Clínico</span> &rarr;
+                    <span>4. Guía de Comunicación</span> &rarr;
+                    <span>5. Herramienta Teach-Back</span>
+                </div>
+            </div>
+
+            <!-- SECCIÓN AMPLIA DE SELECCIÓN DE PAÍS DE LA PACIENTE -->
+            <div class="bg-slate-900 text-white rounded-3xl p-5 sm:p-7 soft-shadow space-y-4 border border-slate-800">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 class="font-heading text-lg font-bold text-teal-300 flex items-center gap-2">
+                            <i class="fa-solid fa-user-gear"></i> Consultar según País de Origen de la Gestante
+                        </h3>
+                        <p class="text-xs text-slate-400">Seleccione la nacionalidad de la usuaria para calibrar el lenguaje y modismos clínicos.</p>
+                    </div>
+                    <span class="text-xs font-bold bg-teal-900/80 text-teal-300 px-3 py-1 rounded-full border border-teal-700 self-start sm:self-auto" id="pro-selected-country-label">
+                        Paciente de: Venezuela 🇻🇪
+                    </span>
+                </div>
+
+                <!-- Grid de Países para Profesional -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3 text-xs" id="pro-countries-grid">
+                    <!-- Populated via JavaScript -->
+                </div>
+            </div>
+
+            <!-- BUSCADOR INTERCULTURAL PROFESIONAL -->
+            <div class="bg-white rounded-3xl p-5 soft-shadow border border-teal-100 space-y-3">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    <i class="fa-solid fa-magnifying-glass text-teal-600 mr-1"></i> Búsqueda de Término Expresado por la Paciente en Consulta
+                </label>
+                <div class="relative">
+                    <input type="text" id="pro-search-input" aria-label="Consultar término expresado por la paciente" 
+                           placeholder="Ingrese el vocablo dicho por la paciente (ej: quebranto, perder agua, estar sanando, ecos)..." 
+                           class="w-full pl-4 pr-32 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <button onclick="performProSearch()" 
+                            class="absolute right-2 top-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-sm">
+                        Consultar
+                    </button>
+                </div>
+            </div>
+
+            <!-- TARJETA RESULTADO Y HERRAMIENTAS CLINICAS -->
+            <div id="pro-result-card" aria-live="polite" class="bg-white rounded-3xl border border-slate-200 soft-shadow-lg overflow-hidden">
+                
+                <div class="bg-slate-900 p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider bg-slate-800 text-teal-300 px-3 py-1 rounded-full border border-slate-700" id="pro-res-origin-badge">
+                            Término referido por paciente (Venezuela 🇻🇪)
+                        </span>
+                        <h3 class="font-heading text-2xl sm:text-3xl font-bold mt-2 text-white" id="pro-res-term">
+                            "Tener quebranto"
+                        </h3>
+                    </div>
+                    <span class="bg-teal-500/20 text-teal-200 border border-teal-400/30 px-3.5 py-1.5 rounded-xl text-xs font-bold">
+                        Equivalente Clínico Obstétrico
+                    </span>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    
+                    <!-- Significado Clínico vs Chile -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Significado Clínico Real</h4>
+                            <p class="font-heading text-lg font-bold text-slate-800 mt-1" id="pro-res-meaning">Febrícula / Sensación febril ligera</p>
+                        </div>
+                        <div class="bg-teal-50/70 p-4 rounded-2xl border border-teal-200">
+                            <h4 class="text-xs font-bold text-teal-800 uppercase tracking-wider">Término Habitual en Red de Salud Chile</h4>
+                            <p class="font-heading text-lg font-bold text-teal-950 mt-1" id="pro-res-chile">Alza térmica leve / Febrícula (&lt; 38°C)</p>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Comunicación Respetuosa -->
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-200 space-y-2">
+                        <h4 class="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-comments text-amber-600"></i> Guía de Comunicación Respetuosa e Intercultural
+                        </h4>
+                        <p class="text-xs text-amber-950 leading-relaxed font-medium" id="pro-res-guide">
+                            Validar el malestar expresado por la gestante sin desautorizar su modismo. Utilizar preguntas de precisión clínica empáticas: <em>"¿Desde qué hora siente este quebranto?"</em> indicando el uso correcto del termómetro.
+                        </p>
+                    </div>
+
+                    <!-- Recurso Visual para Box de Atención -->
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-display text-slate-600"></i> Material Visual de Apoyo para Box de Atención
+                        </h4>
+                        <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50 flex flex-col md:flex-row items-center gap-5">
+                            <img id="pro-res-visual-img" 
+                                 src="./assets/photo-1584515979956-d9f6e5d09982.jpg" 
+                                 alt="Lámina para box médico" 
+                                 class="w-full md:w-56 h-36 object-cover rounded-xl shadow-sm border border-white">
+                            <div class="space-y-2 flex-1 text-center md:text-left">
+                                <h5 class="font-heading font-bold text-slate-800 text-sm" id="pro-res-visual-title">Lámina de comprobación rápida en consulta</h5>
+                                <p class="text-xs text-slate-600">Puede mostrar este recurso gráfico en pantalla o impreso para confirmar la comprensión sin barreras de idioma.</p>
+                                <button onclick="projectVisual()" class="text-xs bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-xl transition-all">
+                                    <i class="fa-solid fa-expand mr-1"></i> Proyectar Lámina Ilustrativa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Herramienta Verificación de Comprensión (Teach-Back) -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-200 space-y-3">
+                        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-blue-600"></i> Herramienta de Verificación de Comprensión (Método Teach-Back)
+                        </h4>
+                        <p class="text-xs text-blue-900">Preguntas sugeridas al profesional para confirmar que la indicación fue comprendida correctamente:</p>
+                        <ul class="text-xs text-slate-700 space-y-2 list-none" id="pro-res-teachback">
+                            <!-- Populated via JS -->
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white/80 border-t border-rose-100 py-6 mt-12 text-center text-xs text-slate-500 backdrop-blur-md">
+        <div class="max-w-5xl mx-auto px-4 space-y-1">
+            <p class="font-bold text-slate-700">Idioma del Cuidado — Plataforma Intercultural de Salud Materna 🇨🇱</p>
+            <p class="text-slate-400">Diseñado para la comunicación respetuosa entre gestantes migrantes y profesionales de salud en Chile.</p>
+        </div>
+    </footer>
+
+    <dialog id="projection" class="rounded-3xl p-0 w-full max-w-4xl bg-white text-slate-800 shadow-xl">
+        <div class="p-6 space-y-4">
+            <div class="flex items-center justify-between gap-4"><h2 id="projection-title" class="font-heading text-2xl font-bold"></h2><button autofocus onclick="document.getElementById('projection').close()" class="px-4 py-2 bg-slate-100 rounded-xl font-bold" aria-label="Cerrar lámina">Cerrar ×</button></div>
+            <img id="projection-image" alt="Fotografía de apoyo del prototipo" class="w-full max-h-[60vh] object-contain rounded-2xl">
+            <p id="projection-term" class="font-heading text-xl font-bold text-teal-800"></p>
+            <button onclick="window.print()" class="bg-slate-800 text-white px-4 py-2 rounded-xl">Imprimir lámina</button>
+        </div>
+    </dialog>
+    <style>dialog::backdrop{background:rgba(15,23,42,.75)}:focus-visible{outline:3px solid #14b8a6;outline-offset:3px}@media print{body>*:not(dialog){display:none!important}dialog[open]{display:block;position:static;max-width:100%;border:0}dialog button{display:none}}</style>
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // EXPANDED LATIN AMERICAN & CARIBBEAN COUNTRIES LIST
+        const countriesList = [
+            { name: "Venezuela", flag: "🇻🇪", bg: "bg-amber-50 border-amber-200 text-amber-900" },
+            { name: "Haití", flag: "🇭🇹", bg: "bg-blue-50 border-blue-200 text-blue-900" },
+            { name: "Colombia", flag: "🇨🇴", bg: "bg-yellow-50 border-yellow-200 text-yellow-900" },
+            { name: "Perú", flag: "🇵🇪", bg: "bg-rose-50 border-rose-200 text-rose-900" },
+            { name: "Bolivia", flag: "🇧🇴", bg: "bg-emerald-50 border-emerald-200 text-emerald-900" },
+            { name: "Ecuador", flag: "🇪🇨", bg: "bg-teal-50 border-teal-200 text-teal-900" },
+            { name: "Rep. Dominicana", flag: "🇩🇴", bg: "bg-indigo-50 border-indigo-200 text-indigo-900" },
+            { name: "Cuba", flag: "🇨🇺", bg: "bg-purple-50 border-purple-200 text-purple-900" },
+            { name: "Argentina", flag: "🇦🇷", bg: "bg-sky-50 border-sky-200 text-sky-900" },
+            { name: "Chile (Referencia)", flag: "🇨🇱", bg: "bg-slate-100 border-slate-200 text-slate-900" }
+        ];
+
+        // DATABASE OF TERMS & INTERCULTURAL EQUIVALENCES
+        const database = [
+            {
+                country: "Venezuela",
+                originTerm: "Provocar el parto",
+                chileTerm: "Inducción del parto",
+                category: "Procedimiento Obstétrico",
+                explanation: "Procedimiento médico asistido en el cual se aplican medicamentos (oxitocina) para iniciar las contracciones del parto cuando es seguro para la madre y el bebé.",
+                visualImg: "./assets/photo-1579684385127-1ef15d508118.jpg",
+                visualTitle: "Gráfico de inducción hospitalaria",
+                visualDesc: "Muestra el suero con oxitocina y el monitor fetal en la sala de preparto.",
+                proMeaning: "Inducción farmacológica del trabajo de parto por indicación clínica.",
+                proGuide: "Explique calmadamente a la gestante la causa médica de la inducción para disminuir la ansiedad. Evite tecnicismos farmacológicos.",
+                teachback: [
+                    "¿Podría decirme con sus palabras por qué el equipo médico necesita provocar el parto hoy?",
+                    "¿Tiene claro qué medicamento le colocaremos en el suero y para qué sirve?"
+                ]
+            },
+            {
+                country: "Venezuela",
+                originTerm: "Tener quebranto",
+                chileTerm: "Alza térmica leve / Febrícula",
+                category: "Síntoma / Malestar",
+                explanation: "Sensación de cuerpo pesado y malestar con un pequeño aumento de temperatura sin llegar a fiebre alta (menos de 38°C).",
+                visualImg: "./assets/photo-1584515979956-d9f6e5d09982.jpg",
+                visualTitle: "Semáforo de control de temperatura",
+                visualDesc: "Pictograma de medición de temperatura corporal y signos de alerta materna.",
+                proMeaning: "Alza térmica subfebril o sensación febril reportada por la usuaria.",
+                proGuide: "Acoja el término 'quebranto' sin corregir impositivamente. Enseñe a medir la temperatura exacta con termómetro.",
+                teachback: [
+                    "¿A partir de qué número en el termómetro debe acudir de urgencia a la maternidad?",
+                    "¿Qué hará en casa si la temperatura vuelve a subir?"
+                ]
+            },
+            {
+                country: "Haití",
+                originTerm: "Pèdi dlo (Perder agua / Romper agua)",
+                chileTerm: "Rotura prematura de membranas",
+                category: "Evento de Urgencia",
+                explanation: "Salida de líquido transparente e inodoro por la vagina. Ocurre cuando la bolsa amniótica que protege al bebé se ha abierto.",
+                visualImg: "./assets/photo-1516549655169-df83a0774514.jpg",
+                visualTitle: "Lámina gráfica de rotura de fuente",
+                visualDesc: "Ilustración del saco amniótico e indicación de acudir de inmediato al hospital.",
+                proMeaning: "Rotura de membranas amnióticas.",
+                proGuide: "Término fundamental en usuarias de habla Kreyòl/Haití. Pregunte por el color y la hora exacta en que comenzó a perder agua.",
+                teachback: [
+                    "¿De qué color era el líquido que le salió al romper agua?",
+                    "¿Sabe que debe acudir inmediatamente a la urgencia sin esperar las contracciones?"
+                ]
+            },
+            {
+                country: "Colombia",
+                originTerm: "Sanar / Estar sanando",
+                chileTerm: "Puerperio / Recup. posparto",
+                category: "Etapa de Cuidados",
+                explanation: "Los primeros 40 días después del nacimiento (la 'cuarentena') donde el cuerpo de la mamá se recupera del parto.",
+                visualImg: "./assets/photo-1555252333-9f8e92e65df9.jpg",
+                visualTitle: "Cuidados de la madre en el puerperio",
+                visualDesc: "Lámina explicativa de descanso, amamantamiento y control con matrona a los 7 días.",
+                proMeaning: "Periodo del puerperio y recuperación fisiológica maternal.",
+                proGuide: "En Colombia 'sanar' abarca aspectos emocionales y corporales. Respete las costumbres culturales sobre dietas de abrigo si no son nocivas.",
+                teachback: [
+                    "¿A los cuántos días del parto debe traer a su bebé a su primer control en el CESFAM?",
+                    "¿Qué signos de fiebre o dolor en sus heridas le harían volver a la urgencia?"
+                ]
+            },
+            {
+                country: "Perú",
+                originTerm: "Hacerse una eco / Ecos",
+                chileTerm: "Ecografía obstétrica / Ultrasonido",
+                category: "Examen de Diagnóstico",
+                explanation: "Estudio seguro con ultrasonido para observar la imagen del bebé dentro del vientre, oír su corazón y controlar su crecimiento.",
+                visualImg: "./assets/photo-1578496781379-7dcfb995293d.jpg",
+                visualTitle: "Lámina de ecografía prenatal",
+                visualDesc: "Foto explicativa de ecografía indicando que es un procedimiento indoloro para la mamá y el bebé.",
+                proMeaning: "Examen ecográfico obstétrico de rutina o diagnóstico.",
+                proGuide: "Aclare cuántas ecografías están garantizadas en la red pública del CESFAM según las semanas de gestación.",
+                teachback: [
+                    "¿Entendió en qué fecha y lugar le corresponde realizarse su próxima ecografía?"
+                ]
+            },
+            {
+                country: "Bolivia",
+                originTerm: "Tener sobreparto",
+                chileTerm: "Complicación puerperal / Infección",
+                category: "Alerta Médica",
+                explanation: "Malestar severo con dolor de cabeza o fiebre después de dar a luz, originado por resfrío o complicación posterior al parto.",
+                visualImg: "./assets/photo-1584515979956-d9f6e5d09982.jpg",
+                visualTitle: "Señales de alerta posparto",
+                visualDesc: "Infografía de síntomas de alarma que requieren evaluación médica inmediata.",
+                proMeaning: "Posible complicación infecciosa o hipertensiva del puerperio.",
+                proGuide: "Atienda la preocupación del 'sobreparto' indagando presión arterial, loquios con mal olor y temperatura corporal.",
+                teachback: [
+                    "Si siente ese malestar o 'sobreparto', ¿recuerda cuáles son los síntomas clave para ir a la urgencia?"
+                ]
+            }
+        ];
+
+        let selectedCountry = "Venezuela";
+
+        // INITIALIZE COUNTRY GRIDS
+        function initCountryGrids() {
+            const gestanteGrid = document.getElementById('gestante-countries-grid');
+            const proGrid = document.getElementById('pro-countries-grid');
+
+            gestanteGrid.innerHTML = '';
+            proGrid.innerHTML = '';
+
+            countriesList.forEach(c => {
+                const isSelected = c.name === selectedCountry;
+
+                // Gestante button
+                const btnG = document.createElement('button');
+                btnG.setAttribute('aria-pressed', String(isSelected));
+                btnG.onclick = () => selectCountry(c.name);
+                btnG.className = `p-2.5 rounded-2xl border font-bold flex items-center justify-start gap-2 transition-all ${
+                    isSelected 
+                        ? 'bg-rose-500 text-white border-rose-500 shadow-sm scale-105' 
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-rose-50'
+                }`;
+                btnG.innerHTML = `<span class="text-xl">${c.flag}</span> <span class="truncate">${c.name}</span>`;
+                gestanteGrid.appendChild(btnG);
+
+                // Pro button
+                const btnP = document.createElement('button');
+                btnP.setAttribute('aria-pressed', String(isSelected));
+                btnP.onclick = () => selectCountry(c.name);
+                btnP.className = `p-2.5 rounded-2xl border font-bold flex items-center justify-start gap-2 transition-all ${
+                    isSelected 
+                        ? 'bg-teal-500 text-white border-teal-500 shadow-sm scale-105' 
+                        : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
+                }`;
+                btnP.innerHTML = `<span class="text-xl">${c.flag}</span> <span class="truncate">${c.name}</span>`;
+                proGrid.appendChild(btnP);
+            });
+        }
+
+        // SWITCH PROFILE (GESTANTE / PROFESIONAL)
+        function setProfile(profile) {
+            window.scrollTo(0, 0);
+            document.getElementById('screen-landing').classList.add('hidden');
+
+            const navGestante = document.getElementById('nav-btn-gestante');
+            const navPro = document.getElementById('nav-btn-pro');
+            const flowGestante = document.getElementById('flow-gestante');
+            const flowPro = document.getElementById('flow-profesional');
+
+            if (profile === 'gestante') {
+                navGestante.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-rose-500 text-white shadow-sm";
+                navPro.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900";
+                flowGestante.classList.remove('hidden');
+                flowPro.classList.add('hidden');
+            } else {
+                navPro.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-slate-900 text-white shadow-sm";
+                navGestante.className = "px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900";
+                flowPro.classList.remove('hidden');
+                flowGestante.classList.add('hidden');
+            }
+            performGestanteSearch();
+            performProSearch();
+        }
+
+        function navigate(to) {
+            if (to === 'landing') {
+                window.scrollTo(0, 0);
+                document.getElementById('screen-landing').classList.remove('hidden');
+                document.getElementById('flow-gestante').classList.add('hidden');
+                document.getElementById('flow-profesional').classList.add('hidden');
+            }
+        }
+
+        function selectCountry(countryName) {
+            selectedCountry = countryName;
+            document.getElementById('gestante-search-input').value = '';
+            document.getElementById('pro-search-input').value = '';
+            const countryObj = countriesList.find(c => c.name === countryName) || countriesList[0];
+            
+            document.getElementById('selected-country-label').textContent = `País actual: ${countryObj.name} ${countryObj.flag}`;
+            document.getElementById('pro-selected-country-label').textContent = `Paciente de: ${countryObj.name} ${countryObj.flag}`;
+            
+            initCountryGrids();
+            performGestanteSearch();
+            performProSearch();
+        }
+
+        // TABS GESTANTE
+        function switchGestanteTab(tab) {
+            const tabs = ['search', 'dictionary', 'system'];
+            tabs.forEach(t => {
+                document.getElementById(`gestante-tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-g-${t}`);
+                btn.className = "px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-white text-slate-600 hover:bg-rose-50 flex items-center gap-2";
+            });
+
+            document.getElementById(`gestante-tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-g-${tab}`).className = "px-4 py-2.5 rounded-2xl font-bold text-xs sm:text-sm transition-all bg-rose-500 text-white shadow-sm flex items-center gap-2";
+
+            if (tab === 'dictionary') {
+                renderDictionary();
+            }
+        }
+
+        // SEARCH GESTANTE
+        function performGestanteSearch() {
+            const query = document.getElementById('gestante-search-input').value.toLowerCase().trim();
+            let countryObj = countriesList.find(c => c.name === selectedCountry) || countriesList[0];
+
+            const match = findTerm(query);
+            const cardId = 'gestante-result-card';
+            if (!showSearchResult(cardId, match, query)) return;
+            countryObj = countriesList.find(c => c.name === match.country);
+
+            document.getElementById('res-country-badge').textContent = `Expresión en ${match.country} ${countryObj.flag}`;
+            document.getElementById('res-origin-term').textContent = `"${match.originTerm}"`;
+            document.getElementById('res-chile-term').textContent = match.chileTerm;
+            document.getElementById('res-category-badge').textContent = `Categoría: ${match.category}`;
+            document.getElementById('res-explanation').textContent = match.explanation;
+            document.getElementById('res-visual-img').src = match.visualImg;
+            document.getElementById('res-visual-title').textContent = match.visualTitle;
+            document.getElementById('res-visual-desc').textContent = match.visualDesc;
+        }
+
+        // SEARCH PROFESIONAL
+        function performProSearch() {
+            const query = document.getElementById('pro-search-input').value.toLowerCase().trim();
+            let countryObj = countriesList.find(c => c.name === selectedCountry) || countriesList[0];
+
+            const match = findTerm(query);
+            const cardId = 'pro-result-card';
+            if (!showSearchResult(cardId, match, query)) return;
+            countryObj = countriesList.find(c => c.name === match.country);
+
+            document.getElementById('pro-res-origin-badge').textContent = `Término referido por paciente (${match.country} ${countryObj.flag})`;
+            document.getElementById('pro-res-term').textContent = `"${match.originTerm}"`;
+            document.getElementById('pro-res-meaning').textContent = match.proMeaning;
+            document.getElementById('pro-res-chile').textContent = match.chileTerm;
+            document.getElementById('pro-res-guide').textContent = match.proGuide;
+            document.getElementById('pro-res-visual-img').src = match.visualImg;
+            document.getElementById('pro-res-visual-title').textContent = match.visualTitle;
+
+            const teachbackUl = document.getElementById('pro-res-teachback');
+            teachbackUl.innerHTML = '';
+            match.teachback.forEach(q => {
+                const li = document.createElement('li');
+                li.className = "flex items-start gap-2 bg-white p-3 rounded-xl border border-blue-100 font-semibold";
+                li.innerHTML = `<i class="fa-solid fa-comment-medical text-blue-500 mt-0.5"></i> <span>"${q}"</span>`;
+                teachbackUl.appendChild(li);
+            });
+        }
+
+        // RENDER DICTIONARY LIST
+        function renderDictionary() {
+            const container = document.getElementById('dict-items-container');
+            container.innerHTML = '';
+
+            database.forEach(item => {
+                const countryObj = countriesList.find(c => c.name === item.country) || { flag: "🌎" };
+                const card = document.createElement('div');
+                card.className = "border border-rose-100 rounded-2xl p-4 bg-slate-50 hover:bg-white hover:border-rose-300 transition-all cursor-pointer soft-shadow space-y-3 flex flex-col justify-between";
+                card.tabIndex = 0;
+                card.setAttribute('role', 'button');
+                card.onkeydown = e => { if(e.key === 'Enter' || e.key === ' ') {e.preventDefault();card.click();} };
+                card.onclick = () => {
+                    selectCountry(item.country);
+                    switchGestanteTab('search');
+                    document.getElementById('gestante-search-input').value = item.originTerm;
+                    performGestanteSearch();
+                };
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold px-2.5 py-0.5 bg-rose-100 text-rose-800 rounded-full">${countryObj.flag} ${item.country}</span>
+                            <span class="text-[11px] font-semibold text-slate-400 uppercase">${item.category}</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-slate-800 text-base">"${item.originTerm}"</h4>
+                        <p class="text-xs font-bold text-teal-700 bg-teal-50 p-2 rounded-xl border border-teal-100">
+                            🇨🇱 Chile: ${item.chileTerm}
+                        </p>
+                        <p class="text-xs text-slate-600 line-clamp-2">${item.explanation}</p>
+                    </div>
+                    <div class="flex items-center text-xs text-rose-500 font-bold pt-2 border-t border-slate-200/60">
+                        Ver ficha e ilustración <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+
+        function normalize(value) {
+            return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+        }
+        function findTerm(query) {
+            const local = database.filter(item => item.country === selectedCountry);
+            if (!query) return local[0];
+            const needle = normalize(query);
+            return local.find(item => normalize(item.originTerm + ' ' + item.chileTerm).includes(needle));
+        }
+        function showSearchResult(cardId, match, query) {
+            const card = document.getElementById(cardId);
+            let empty = document.getElementById(cardId + '-empty');
+            if (!empty) {
+                empty = document.createElement('div');
+                empty.id = cardId + '-empty';
+                empty.className = 'bg-white rounded-3xl p-6 border border-slate-200 text-sm text-slate-600';
+                empty.setAttribute('role', 'status');
+                card.before(empty);
+            }
+            card.classList.toggle('hidden', !match);
+            empty.hidden = Boolean(match);
+            empty.textContent = query ? 'No encontramos ese término para ' + selectedCountry + '. Prueba otra palabra o consulta el Diccionario Obstétrico.' : 'Todavía no hay términos de ' + selectedCountry + ' en este prototipo. Puedes explorar los disponibles en el Diccionario Obstétrico.';
+            return Boolean(match);
+        }
+        function projectVisual() {
+            const img = document.getElementById('pro-res-visual-img');
+            document.getElementById('projection-image').src = img.src;
+            document.getElementById('projection-title').textContent = document.getElementById('pro-res-visual-title').textContent;
+            document.getElementById('projection-term').textContent = document.getElementById('pro-res-chile').textContent;
+            document.getElementById('projection').showModal();
+        }
+        document.getElementById('gestante-search-input').addEventListener('keydown', e => {if(e.key === 'Enter') performGestanteSearch();});
+        document.getElementById('pro-search-input').addEventListener('keydown', e => {if(e.key === 'Enter') performProSearch();});
+        document.getElementById('projection').addEventListener('click', e => {if(e.target.id === 'projection') e.target.close();});
+
+        // INITIAL ONLOAD
+        window.onload = function() {
+            initCountryGrids();
+            performGestanteSearch();
+            performProSearch();
+        };
+    </script>
+</body>
+</html>
